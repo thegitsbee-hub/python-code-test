@@ -157,3 +157,315 @@ if __name__ == "__main__":
 
 
 #5
+import pandas as pd
+
+
+def problem_1(df):
+    # 'reg_dt'가 20250401 이후의 최신 데이터를 제거하세요.
+    
+    filtered_df = pd.to_datetime(data['reg_dt'])
+    pd.date_range(start='2023-07-01', end='2023-07-10')
+    df[df['reg_dt'] == 'MIM0071.01']
+    return filtered_df
+
+
+def problem_2(filtered_df):
+    # '결과' 열을 추가하여 '1차검수'와 '2차검수' 열이 모두 'Alarm'인 경우 'NG', 아닌 경우 'OK'로 설정하세요.
+    filtered_df["결과"] = None
+    return filtered_df
+
+
+def problem_3(filtered_df):
+    # 'due date' 열의 값이 'EXPIRED'인 행을 제거하세요.
+    result_df = None
+    return result_df
+
+
+if __name__ == "__main__":
+    df = pd.read_table("Alarm.txt")
+    filtered_df = problem_1(df)
+    filtered_df = problem_2(filtered_df)
+    result_df = problem_3(filtered_df)
+    print(result_df)
+
+
+#6
+import numpy as np
+import pandas as pd
+
+
+# df의 "Equipment" Column에서 Underbar("_")를 기준으로 분할한 뒤, 뒷 부분을 추출하고 앞에 "SUB_"를 붙인 "Sub" Column 추가
+def problem_1(df):
+    df["Sub"] = 'SUB_' + df['equipment'].str.split('_').str[-1]
+    return df
+
+
+# Groupby를 활용하여 df의 "Sub"별로 "Quantity"를 합산, 내림차순 정렬, Index 초기화 한 df_sum 반환
+def problem_2(df):
+    df_sum = (
+    df.groupby('Sub', as_index=False)['Quantity']
+      .sum()
+      .sort_values(by='Quantity', ascending=False)
+      .reset_index(drop=True)
+    )
+    return df_sum
+
+
+if __name__ == "__main__":
+    # 데이터 불러오기
+    df = pd.read_csv("./data/data.csv")
+
+    # df에 "Sub" Column 추가
+    df = problem_1(df)
+
+    # df의 "Sub"별로 "Quantity"를 합산, 내림차순 정렬, Index 초기화 한 df_sum 생성
+    df_sum = problem_2(df)
+
+    # 결과 출력
+    for i in range(len(df_sum)):
+        print(f"{df_sum.iloc[i, 0]}의 Quantity: {df_sum.iloc[i, 1]}")
+
+#7
+import pandas as pd
+
+
+def problem_1(my_df):
+    # 지시사항 1. 조건에 맞는 필터를 구현하세요.
+    my_df["target"] = None
+    my_df["설치완료일"] = None
+    my_df["입고일"] = None
+    my_df["실적치"] = None
+
+    my_df = None
+
+    my_df["달성여부"] = None
+
+    return my_df
+
+
+if __name__ == "__main__":
+    dt = pd.read_table("eqp_real.txt")
+    # '장비명' 으로 데이터를 그룹화하고, problem_1 필터를 적용합니다.
+    result_df = dt.groupby("장비명").apply(problem_1)
+    print(result_df)
+
+
+#8
+import numpy as np
+import pandas as pd
+from utils import pre_cal_df
+
+
+def problem_1(eq_2):
+    # end_tm, fab 컬럼을 제외한 PARA 컬럼만 선택
+    df_para = None
+    return df_para
+
+
+def problem_2(df_para):
+    # PARA1, PARA3, ..., PARA9의 홀수 번호가 들어간 컬럼만 추출
+    filtered_df = None
+    return filtered_df
+
+
+def problem_3(filtered_df):
+    # filtered_df의 각 열에 대해 최솟값과 최대값을 계산하여 DataFrame 'res_df'로 저장
+    
+    res_df = None
+    return res_df
+
+
+def problem_4(res_df):
+    # Min - Max의 절대값이 가장 큰 Column 이름을 반환
+    
+    max_col = None
+    return max_col
+
+
+if __name__ == "__main__":
+    my_df = pd.read_csv("exam_df.csv")
+    eq_2 = pre_cal_df(my_df)
+
+    df_para = problem_1(eq_2)
+    filtered_df = problem_2(df_para)
+    res_df = problem_3(filtered_df)
+    max_col = problem_4(res_df)
+    print("최대 차이 컬럼:", max_col)
+
+#9
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+
+# classify_person(x) 함수 적용하여 컬럼 업데이트
+def problem_1(df):
+    # x를 받아 조건에 따른 값 반환
+    def classify_person(x):
+        None
+
+    # 'who'컬럼에 classify_person(x) 함수 적용
+    df["who"] = None
+    return df
+
+
+# `age`와 `survived` 컬럼의 평균 및 합계를 계산하고 두 가지 방식의 결과값 비교
+def problem_2(df):
+    # 그룹화 집계
+    df_groupby = None
+    # 피벗 테이블 생성
+    df_pivottable = None
+
+    # 두 방식의 결과값 비교
+    are_equal = df_groupby.equals(df_pivottable)
+    return are_equal
+
+
+if __name__ == "__main__":
+    # 데이터 불러오기
+    df = sns.load_dataset("titanic")
+
+    # df['who'] 컬럼 업데이트
+    df = problem_1(df)
+
+    # 그룹화와 피벗 테이블 방식의 평균 및 합계 결과값 비교
+    are_equal = problem_2(df)
+    if are_equal:
+        print("두 Table의 결과값이 같습니다.")
+    else:
+        print("두 Table의 결과값이 다릅니다.")
+
+
+#10
+
+import pandas as pd
+import numpy as np
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
+
+# 월별로 첫 번째 날과 마지막 날의 가격을 반환
+def problem_1(df):
+    first_prices = None
+    last_prices = None
+    return first_prices, last_prices
+
+
+# 월별 수익률 계산
+def problem_2(first_prices, last_prices):
+    returns = None
+    return returns
+
+
+# 각 월별로 가장 높은 수익률을 가진 종목 반환
+def problem_3(returns):
+    # 결과 딕셔너리 초기화
+    results = {}
+
+    # 각 월별로 가장 높은 수익률을 가진 종목 찾기
+    for month, row in returns.iterrows():
+        max_return = None
+        best_stock = None
+        results[month.strftime('%Y-%m')] = {
+            'stock': None,
+            'return': None
+        }
+
+    return results
+
+
+if __name__ == "__main__":
+    # random seed 설정
+    np.random.seed(2025)
+
+    # 데이터 생성
+    data = {
+        "date": pd.date_range(start="2020-01-01", periods=1000, freq="B"),
+        "AAPL": np.random.normal(150, 10, 1000).cumsum() + 100,
+        "GOOGL": np.random.normal(2500, 50, 1000).cumsum() + 2000,
+        "MSFT": np.random.normal(300, 5, 1000).cumsum() + 250,
+    }
+
+    # 데이터프레임 생성 및 날짜를 인덱스로 설정
+    df = pd.DataFrame(data)
+    df.set_index("date", inplace=True)
+
+    # 월별로 첫 번째 날과 마지막 날의 가격 구하기
+    first_prices, last_prices = problem_1(df)
+
+    # 월별 수익률 계산
+    returns = problem_2(first_prices, last_prices)
+
+    # 각 월별로 가장 높은 수익률을 가진 종목 구하기
+    results = problem_3(returns)
+
+    # 결과 출력
+    for month, data in results.items():
+        print(f"월: {month}")
+        print(f"가장 높은 수익률을 가진 종목: {data['stock']}")
+        print(f"수익률: {data['return']:.2f}%")
+        print()
+
+#11
+import numpy as np
+import pandas as pd
+
+
+# 'model_judge' 데이터프레임 생성
+def problem_1(data_df):
+    model_judge = None
+    return model_judge
+
+
+# 'para_usage_judge' 데이터프레임 생성
+def problem_2(data_df):
+    para_usage_judge = None
+    return para_usage_judge
+
+
+# 각 판정 결과와 원본 데이터프레임 병합
+def problem_3(data_df, model_judge, para_usage_judge):
+    data_df = None
+    return data_df
+
+
+# 최종 판정을 수행하는 'final_judge' 열 추가
+def problem_4(data_df):
+    data_df["final_judge"] = None
+    return data_df
+
+
+if __name__ == "__main__":
+    # random seed 설정
+    np.random.seed(0)
+
+    # Data 생성
+    data_dict = {
+        "eqp_id": ["eqp" + str(i) for i in range(1, 21) for j in range(1, 11)],
+        "eqp_group": ["group" + str(i) for i in range(1, 5) for j in range(1, 51)],
+        "eqp_model": ["model" + str(i) for i in range(1, 4) for j in range(1, 51)]
+        + ["model4"] * 40
+        + ["model5"] * 10,
+        "eqp_para": ["para" + str(i) for i in range(1, 11)] * 20,
+        "use_yn": ["Y" if np.random.rand() < 0.9 else "N" for _ in range(200)],
+    }
+
+    data_df = pd.DataFrame(data_dict)
+    data_df.drop(np.random.randint(0, 200, 8), axis=0, inplace=True)
+
+    model_judge = problem_1(data_df)
+    print("model_judge: \n", model_judge)
+
+    para_usage_judge = problem_2(data_df)
+    print("para_usage_judge: \n", para_usage_judge)
+
+    data_df = problem_3(data_df, model_judge, para_usage_judge)
+    print("각 판정 결과를 병합한 데이터프레임: \n", data_df)
+
+    data_df = problem_4(data_df)
+    print("최종 판정을 포함한 데이터프레임: \n", data_df)
+
+    # 최종 판정 결과 출력
+    print(
+        "최종 판정: \n", data_df[["eqp_group", "eqp_model", "eqp_para", "final_judge"]]
+    )
